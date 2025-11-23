@@ -1,0 +1,122 @@
+doctype html
+html
+  head
+    title Asignar Turno
+    link(rel="stylesheet" href="/css/styles.css")
+    style.
+      .search-box {
+        max-width: 500px;
+        margin: 10px auto;
+        display: flex;
+        gap: 10px;
+      }
+      .search-box input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      .search-box button {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        padding: 8px 12px;
+      }
+      .search-box button:hover {
+        background-color: #a71d2a;
+      }
+      table {
+        margin-top: 20px;
+        width: 100%;
+        border-collapse: collapse;
+        display: none; /* Oculta tabla al inicio */
+      }
+      th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+      }
+      th {
+        background-color: #f4f4f4;
+      }
+      .turno-box {
+        margin-top: 20px;
+        display: none; /* Oculto hasta que haya selección */
+        flex-direction: column;
+        gap: 10px;
+        max-width: 300px;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+      }
+  body
+    button.theme-toggle(id="themeBtn") 🌙
+    nav
+      a.btn(href="/") ← Volver al Inicio
+    
+    .asignar-content
+      h1 Asignar Turno
+
+      .search-box
+        input(type="text" id="buscarPaciente" placeholder="Buscar paciente por nombre...")
+        button(type="button" id="clearSearch") ❌
+
+    table#tablaPacientes
+      thead
+        tr
+          th Seleccionar
+          th Nombre
+          th Fecha de Nacimiento
+          th Diagnóstico
+      tbody
+        each paciente in pacientes
+          tr
+            td: input(type="checkbox" name="pacienteCheck" value=paciente.id)
+            td= paciente.nombre
+            td= paciente.F_Nac ? new Date(paciente.F_Nac).toLocaleDateString('es-ES') : 'N/A'
+            td= paciente.diagnostico
+
+    .turno-box#turnoBox
+      .turno-form
+        .fecha-grupo
+          label.fecha-label(for="fecha") Fecha del turno:
+          input.fecha-input(type="date" id="fecha" required)
+
+        .hora-grupo
+          label.hora-label(for="hora") Hora del turno:
+          select.hora-select(id="hora" required)
+            option(value="") Selecciona un horario
+            option(value="10:00") 10:00
+            option(value="11:00") 11:00
+            option(value="12:00") 12:00
+            option(value="13:00") 13:00
+            option(value="14:00") 14:00
+            option(value="15:00") 15:00
+
+        .boton-grupo
+          button.btn.btn-asignar(type="button" id="btnAsignarTurno") Asignar Turno
+
+    // Modal de confirmación
+    .modal#modalConfirmacion
+      .modal-content
+        h2 ✅ Turno asignado correctamente
+        p Los turnos han sido asignados exitosamente.
+        button.btn(id="cerrarModal") Cerrar
+
+    script(src="/js/theme.js")
+    script(src="/js/asignarTurno.js")

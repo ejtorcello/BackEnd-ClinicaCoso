@@ -1,0 +1,65 @@
+[
+  {
+    "nombre": "Juan Pérez",
+    "F_Nac": "1980-05-15",
+    "diagnostico": "Hipertensión",
+    "turnos": [
+      "2025-09-21 10:00",
+      "2025-09-23 15:00"
+    ]
+  },
+  {
+    "nombre": "Ana López",
+    "F_Nac": "1992-11-20",
+    "diagnostico": "Chequeo general",
+    "turnos": [
+      "2025-09-20 09:30"
+    ]
+  },
+  {
+    "nombre": "Carlos Díaz",
+    "F_Nac": "1975-03-10",
+    "diagnostico": "Dolor de espalda",
+    "turnos": []
+  },
+  {
+    "nombre": "María González",
+    "F_Nac": "1998-07-25",
+    "diagnostico": "Controles de embarazo",
+    "turnos": [
+      "2025-09-22 11:00"
+    ]
+  },
+  {
+    "nombre": "Pedro Ramírez",
+    "F_Nac": "1985-01-30",
+    "diagnostico": "Chequeo cardíaco",
+    "turnos": []
+  },
+  {
+    "nombre": "Laura Fernández",
+    "F_Nac": "1982-09-12",
+    "diagnostico": "Chequeo general",
+    "turnos": []
+  },
+  {
+    "nombre": "Sofía Martínez",
+    "F_Nac": "1995-04-18",
+    "diagnostico": "Alergias",
+    "turnos": [
+      "2025-09-25 14:30"
+    ]
+  },
+  {
+    "nombre": "Diego Torres",
+    "F_Nac": "1990-12-05",
+    "diagnostico": "Dolor abdominal",
+    "turnos": []
+  },
+  {
+    "nombre": "Valentina Suárez",
+    "F_Nac": "2001-06-22",
+    "diagnostico": "Chequeo ginecológico",
+    "turnos": []
+  }
+]

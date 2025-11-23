@@ -1,0 +1,59 @@
+doctype html
+html
+  head
+    title= titulo
+    link(rel="stylesheet" href="/css/styles.css")
+
+  body
+    button.theme-toggle(id="themeBtn") 🌙
+    nav
+      a.btn(href="/") ← Volver al Inicio
+    
+    .pacientes-content
+      h1= titulo
+      if pacientes.length
+        table
+          thead
+            tr
+              th ID
+              th Nombre
+              th Fecha de Nacimiento
+              th Diagnóstico
+              th Turnos
+          tbody
+            each paciente in pacientes
+              tr
+                td= paciente.id
+                td= paciente.nombre
+                td= paciente.F_Nac ? new Date(paciente.F_Nac).toLocaleDateString('es-ES') : 'N/A'
+                td= paciente.diagnostico
+                td
+                  if paciente.turnos.length
+                    ul.turnos-list
+                      each turno, index in paciente.turnos
+                        li.turno-item
+                          span.turno-text= turno
+                          button.btn-eliminar(type="button" 
+                                             data-paciente-id=paciente.id 
+                                             data-turno-index=index 
+                                             data-turno-fecha=turno 
+                                             title="Eliminar turno")
+                  else
+                    | Sin turnos
+      else
+        p No hay pacientes registrados.
+    
+    // Modal de confirmación para eliminar turno
+    .modal#modalEliminarTurno
+      .modal-content
+        h3 ⚠️ Confirmar eliminación
+        .turno-info
+          .turno-fecha#fechaTurno
+          .turno-hora#horaTurno
+        p ¿Estás seguro de que deseas eliminar este turno?
+        .modal-buttons
+          button.btn.btn-cancelar#btnCancelar Cancelar
+          button.btn.btn-confirmar#btnConfirmarEliminar Eliminar
+    
+    script(src="/js/theme.js")
+    script(src="/js/pacientes.js")
