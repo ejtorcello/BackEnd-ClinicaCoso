@@ -4,8 +4,8 @@ import { authMiddleware, rolMiddleware } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.get("/", authMiddleware, listarTurnos);
+router.get("/", authMiddleware(), listarTurnos);
 
-router.post("/", authMiddleware, rolMiddleware(["admin", "recepcionista"]), crearTurno);
+router.post("/", authMiddleware(), rolMiddleware(["admin", "recepcionista"]), crearTurno);
 
 export default router;

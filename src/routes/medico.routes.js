@@ -17,8 +17,8 @@ router.get("/", authMiddleware(), obtenerMedicos);
 router.get("/:id", authMiddleware(), obtenerMedico);
 
 
-router.post("/", authMiddleware, rolMiddleware(["admin", "recepcionista"]), crearMedico);
-router.put("/:id", authMiddleware, rolMiddleware(["admin", "recepcionista"]), actualizarMedico);
-router.delete("/:id", authMiddleware, rolMiddleware(["admin", "recepcionista"]), eliminarMedico);
+router.post("/", authMiddleware(), rolMiddleware(["admin", "recepcionista"]), crearMedico);
+router.put("/:id", authMiddleware(), rolMiddleware(["admin", "recepcionista"]), actualizarMedico);
+router.delete("/:id", authMiddleware(), rolMiddleware(["admin", "recepcionista"]), eliminarMedico);
 
 export default router;
