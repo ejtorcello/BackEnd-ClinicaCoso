@@ -64,8 +64,8 @@ export const obtenerPaciente = async (req, res) => {
 
 export const crearPaciente = async (req, res) => {
   try {
-    const { nombre, F_Nac, diagnostico } = req.body;
-    const nuevo = new Paciente({ nombre, F_Nac, diagnostico });
+    const { nombre, apellido, F_Nac, telefono, domicilio, diagnostico } = req.body;
+    const nuevo = new Paciente({ nombre, apellido, F_Nac, telefono, domicilio, diagnostico });
     await nuevo.save();
 
     if (req.headers.accept && req.headers.accept.includes("text/html")) {
@@ -95,7 +95,7 @@ export const eliminarPaciente = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Verificar si hay turnos pendientes o confirmados
+    // Lock para verificar si hay turnos pendientes o confirmados
     const turnosPendientes = await Turno.findOne({
       paciente: id,
       estado: { $in: ["pendiente", "confirmado"] }

@@ -100,7 +100,7 @@ export const completarTurnoMedico = async (req, res) => {
     // Actualizar diagnostico del paciente
     await Paciente.findByIdAndUpdate(turno.paciente, { diagnostico });
 
-    // Eliminar turno (o marcar como realizado si prefieres no borrar)
+    // Eliminar turno (o marcar como )
     await Turno.findByIdAndDelete(req.params.id);
 
     res.redirect("/medicos/mis-pacientes");

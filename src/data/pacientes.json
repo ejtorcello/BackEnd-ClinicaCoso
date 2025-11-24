@@ -1,6 +1,9 @@
 [
   {
-    "nombre": "Juan Pérez",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "telefono": "555-0101",
+    "domicilio": "Calle Falsa 123",
     "F_Nac": "1980-05-15",
     "diagnostico": "Hipertensión",
     "turnos": [
@@ -9,7 +12,10 @@
     ]
   },
   {
-    "nombre": "Ana López",
+    "nombre": "Ana",
+    "apellido": "López",
+    "telefono": "555-0102",
+    "domicilio": "Av. Siempre Viva 742",
     "F_Nac": "1992-11-20",
     "diagnostico": "Chequeo general",
     "turnos": [
@@ -17,13 +23,19 @@
     ]
   },
   {
-    "nombre": "Carlos Díaz",
+    "nombre": "Carlos",
+    "apellido": "Díaz",
+    "telefono": "555-0103",
+    "domicilio": "Calle 4 567",
     "F_Nac": "1975-03-10",
     "diagnostico": "Dolor de espalda",
     "turnos": []
   },
   {
-    "nombre": "María González",
+    "nombre": "María",
+    "apellido": "González",
+    "telefono": "555-0104",
+    "domicilio": "Calle 8 910",
     "F_Nac": "1998-07-25",
     "diagnostico": "Controles de embarazo",
     "turnos": [
@@ -31,19 +43,28 @@
     ]
   },
   {
-    "nombre": "Pedro Ramírez",
+    "nombre": "Pedro",
+    "apellido": "Ramírez",
+    "telefono": "555-0105",
+    "domicilio": "Calle 12 345",
     "F_Nac": "1985-01-30",
     "diagnostico": "Chequeo cardíaco",
     "turnos": []
   },
   {
-    "nombre": "Laura Fernández",
+    "nombre": "Laura",
+    "apellido": "Fernández",
+    "telefono": "555-0106",
+    "domicilio": "Calle 16 789",
     "F_Nac": "1982-09-12",
     "diagnostico": "Chequeo general",
     "turnos": []
   },
   {
-    "nombre": "Sofía Martínez",
+    "nombre": "Sofía",
+    "apellido": "Martínez",
+    "telefono": "555-0107",
+    "domicilio": "Calle 20 123",
     "F_Nac": "1995-04-18",
     "diagnostico": "Alergias",
     "turnos": [
@@ -51,13 +72,19 @@
     ]
   },
   {
-    "nombre": "Diego Torres",
+    "nombre": "Diego",
+    "apellido": "Torres",
+    "telefono": "555-0108",
+    "domicilio": "Calle 24 456",
     "F_Nac": "1990-12-05",
     "diagnostico": "Dolor abdominal",
     "turnos": []
   },
   {
-    "nombre": "Valentina Suárez",
+    "nombre": "Valentina",
+    "apellido": "Suárez",
+    "telefono": "555-0109",
+    "domicilio": "Calle 28 789",
     "F_Nac": "2001-06-22",
     "diagnostico": "Chequeo ginecológico",
     "turnos": []

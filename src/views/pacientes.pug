@@ -21,6 +21,9 @@ html
             tr
               th ID
               th Nombre
+              th Apellido
+              th Telefono
+              th Domicilio
               th Edad
               th Diagnóstico
               th Turnos
@@ -31,6 +34,9 @@ html
               tr
                 td= paciente.id
                 td= paciente.nombre
+                td= paciente.apellido
+                td= paciente.telefono
+                td= paciente.domicilio
                 td= paciente.edad
                 td= paciente.diagnostico
                 td
@@ -65,6 +71,15 @@ html
           .form-group
             label(for="nombre") Nombre:
             input(type="text" name="nombre" required)
+          .form-group
+            label(for="apellido") Apellido:
+            input(type="text" name="apellido" required)
+          .form-group
+            label(for="telefono") Telefono:
+            input(type="text" name="telefono")
+          .form-group
+            label(for="domicilio") Domicilio:
+            input(type="text" name="domicilio")
           .form-group
             label(for="F_Nac") Fecha de Nacimiento:
             input(type="date" name="F_Nac" required)

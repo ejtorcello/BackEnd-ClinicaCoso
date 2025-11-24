@@ -54,6 +54,9 @@ const run = async () => {
     for (const p of pacientesData) {
       const nuevo = await Paciente.create({
         nombre: p.nombre,
+        apellido: p.apellido,
+        telefono: p.telefono,
+        domicilio: p.domicilio,
         F_Nac: new Date(p.F_Nac),
         diagnostico: p.diagnostico
       });
