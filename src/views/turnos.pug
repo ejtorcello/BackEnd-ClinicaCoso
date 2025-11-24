@@ -20,7 +20,8 @@ html
               th Fecha y Hora
           tbody
             each turno in turnos
-              tr
+              - const isPast = new Date(turno.fechaHora) < new Date();
+              tr(class=isPast ? 'turno-vencido' : '')
                 td= turno.paciente ? turno.paciente.nombre : 'Desconocido'
                 td= turno.fechaHora
       else

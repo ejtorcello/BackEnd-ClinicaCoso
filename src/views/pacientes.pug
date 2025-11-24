@@ -43,7 +43,8 @@ html
                   if paciente.turnos.length
                     ul.turnos-list
                       each turno in paciente.turnos
-                        li.turno-item
+                        - const isPast = new Date(turno.fechaHora) < new Date();
+                        li.turno-item(class=isPast ? 'turno-vencido' : '')
                           span.turno-text= turno.fechaHora
                           button.btn-icon-eliminar(type="button" 
                                              data-paciente-id=paciente.id 
@@ -92,6 +93,8 @@ html
 
     script.
       function abrirModalCrear() {
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[name="F_Nac"]').setAttribute('max', today);
         document.getElementById('modalCrearPaciente').style.display = 'flex';
       }
       function cerrarModalCrear() {

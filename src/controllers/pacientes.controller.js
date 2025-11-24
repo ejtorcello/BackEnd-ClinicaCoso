@@ -65,6 +65,15 @@ export const obtenerPaciente = async (req, res) => {
 export const crearPaciente = async (req, res) => {
   try {
     const { nombre, apellido, F_Nac, telefono, domicilio, diagnostico } = req.body;
+
+    if (F_Nac) {
+      const fechaNacimiento = new Date(F_Nac);
+      const hoy = new Date();
+      if (fechaNacimiento > hoy) {
+        return res.status(400).json({ error: "La fecha de nacimiento no puede ser futura." });
+      }
+    }
+
     const nuevo = new Paciente({ nombre, apellido, F_Nac, telefono, domicilio, diagnostico });
     await nuevo.save();
 
@@ -82,6 +91,13 @@ export const crearPaciente = async (req, res) => {
 export const actualizarPaciente = async (req, res) => {
   try {
     const { id } = req.params;
+    if (req.body.F_Nac) {
+      const fechaNacimiento = new Date(req.body.F_Nac);
+      const hoy = new Date();
+      if (fechaNacimiento > hoy) {
+        return res.status(400).json({ error: "La fecha de nacimiento no puede ser futura." });
+      }
+    }
     const actualizado = await Paciente.findByIdAndUpdate(id, req.body, { new: true });
     if (!actualizado) return res.status(404).json({ error: "Paciente no encontrado" });
     return res.json(actualizado);
