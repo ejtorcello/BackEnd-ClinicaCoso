@@ -8,8 +8,12 @@ export const obtenerPacientes = async (req, res) => {
     // para cada paciente, buscar sus turnos
     const pacientesConTurnos = await Promise.all(pacientes.map(async p => {
       const turnos = await Turno.find({ paciente: p._id }).lean();
-      // transformar turnos a strings para compatibilidad con vistas
-      p.turnos = turnos.map(t => t.fechaHora);
+      // transformar turnos a objetos para compatibilidad con vistas y acciones
+      p.turnos = turnos.map(t => ({
+        id: t._id.toString(),
+        fechaHora: t.fechaHora,
+        estado: t.estado
+      }));
       p.id = p._id.toString();
 
       // Calcular edad
@@ -45,7 +49,11 @@ export const obtenerPaciente = async (req, res) => {
     const paciente = await Paciente.findById(id).lean();
     if (!paciente) return res.status(404).json({ error: "Paciente no encontrado" });
     const turnos = await Turno.find({ paciente: paciente._id }).lean();
-    paciente.turnos = turnos.map(t => t.fechaHora);
+    paciente.turnos = turnos.map(t => ({
+      id: t._id.toString(),
+      fechaHora: t.fechaHora,
+      estado: t.estado
+    }));
     paciente.id = paciente._id.toString();
     return res.json(paciente);
   } catch (error) {
@@ -59,20 +67,23 @@ export const crearPaciente = async (req, res) => {
     const { nombre, F_Nac, diagnostico } = req.body;
     const nuevo = new Paciente({ nombre, F_Nac, diagnostico });
     await nuevo.save();
+
+    if (req.headers.accept && req.headers.accept.includes("text/html")) {
+      return res.redirect("/pacientes");
+    }
+
     return res.status(201).json(nuevo);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error creando paciente" });
+    res.status(500).json({ error: "Error creando paciente" });
   }
 };
 
 export const actualizarPaciente = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, F_Nac, diagnostico } = req.body;
-    const actualizado = await Paciente.findByIdAndUpdate(id, { nombre, F_Nac, diagnostico }, { new: true }).lean();
+    const actualizado = await Paciente.findByIdAndUpdate(id, req.body, { new: true });
     if (!actualizado) return res.status(404).json({ error: "Paciente no encontrado" });
-    actualizado.id = actualizado._id.toString();
     return res.json(actualizado);
   } catch (error) {
     console.error(error);
@@ -83,10 +94,28 @@ export const actualizarPaciente = async (req, res) => {
 export const eliminarPaciente = async (req, res) => {
   try {
     const { id } = req.params;
-    // delet turnos asociados primero 
+
+    // Verificar si hay turnos pendientes o confirmados
+    const turnosPendientes = await Turno.findOne({
+      paciente: id,
+      estado: { $in: ["pendiente", "confirmado"] }
+    });
+
+    if (turnosPendientes) {
+      return res.status(400).json({
+        error: "No se puede eliminar el paciente porque tiene turnos pendientes o confirmados."
+      });
+    }
+
+    // delet turnos asociados primero (solo los que no impiden borrar, si hubiera logica mas compleja, pero aqui ya filtramos)
     await Turno.deleteMany({ paciente: id });
     const eliminado = await Paciente.findByIdAndDelete(id);
     if (!eliminado) return res.status(404).json({ error: "Paciente no encontrado" });
+
+    if (req.headers.accept && req.headers.accept.includes("text/html")) {
+      return res.redirect("/pacientes");
+    }
+
     return res.status(204).end();
   } catch (error) {
     console.error(error);
@@ -129,5 +158,22 @@ export const asignarTurno = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Error asignando turno" });
+  }
+};
+
+export const eliminarTurno = async (req, res) => {
+  try {
+    const { id, turnoId } = req.params;
+    // Verificar que el turno pertenezca al paciente (opcional pero recomendado)
+    const turno = await Turno.findOne({ _id: turnoId, paciente: id });
+    if (!turno) {
+      return res.status(404).json({ error: "Turno no encontrado o no pertenece al paciente" });
+    }
+
+    await Turno.findByIdAndDelete(turnoId);
+    return res.json({ message: "Turno eliminado correctamente" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error eliminando turno" });
   }
 };

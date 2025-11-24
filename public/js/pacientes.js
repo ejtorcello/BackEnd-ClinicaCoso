@@ -4,22 +4,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const horaTurno = document.getElementById("horaTurno");
   const btnCancelar = document.getElementById("btnCancelar");
   const btnConfirmarEliminar = document.getElementById("btnConfirmarEliminar");
-  
+
   let pacienteIdAEliminar = null;
-  let turnoIndexAEliminar = null;
+  let turnoIdAEliminar = null;
 
   // Agregar event listeners a todos los botones de eliminar
   document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("btn-eliminar")) {
+    if (e.target.classList.contains("btn-icon-eliminar")) {
       pacienteIdAEliminar = e.target.dataset.pacienteId;
-      turnoIndexAEliminar = e.target.dataset.turnoIndex;
+      turnoIdAEliminar = e.target.dataset.turnoId;
       const fechaHoraTurno = e.target.dataset.turnoFecha;
-      
+
       // Separar fecha y hora
       const [fecha, hora] = fechaHoraTurno.split(' ');
       fechaTurno.textContent = `Fecha: ${fecha}`;
       horaTurno.textContent = `Hora: ${hora}`;
-      
+
       modal.style.display = "flex";
     }
   });
@@ -28,14 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
   btnCancelar.addEventListener("click", () => {
     modal.style.display = "none";
     pacienteIdAEliminar = null;
-    turnoIndexAEliminar = null;
+    turnoIdAEliminar = null;
   });
 
   // Confirmar eliminación
   btnConfirmarEliminar.addEventListener("click", async () => {
-    if (pacienteIdAEliminar && turnoIndexAEliminar !== null) {
+    if (pacienteIdAEliminar && turnoIdAEliminar) {
       try {
-        const response = await fetch(`/pacientes/${pacienteIdAEliminar}/turno/${turnoIndexAEliminar}`, {
+        const response = await fetch(`/pacientes/${pacienteIdAEliminar}/turno/${turnoIdAEliminar}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json"
@@ -53,10 +53,10 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Error de conexión: " + error.message);
       }
     }
-    
+
     modal.style.display = "none";
     pacienteIdAEliminar = null;
-    turnoIndexAEliminar = null;
+    turnoIdAEliminar = null;
   });
 
   // Cerrar modal al hacer clic fuera del contenido
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === modal) {
       modal.style.display = "none";
       pacienteIdAEliminar = null;
-      turnoIndexAEliminar = null;
+      turnoIdAEliminar = null;
     }
   });
 });

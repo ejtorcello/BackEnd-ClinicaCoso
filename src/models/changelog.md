@@ -1,0 +1,2 @@
+--Se corrigió el seed para que cargue los modelos correctamente,
+-- se modofocaron los campos de paciente porque necesitamos registrar fecha de nacimiento no edad

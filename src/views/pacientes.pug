@@ -11,6 +11,10 @@ html
     
     .pacientes-content
       h1= titulo
+      
+      if ['admin', 'recepcionista'].includes(usuario.rol)
+        button.btn(onclick="abrirModalCrear()") + Nuevo Paciente
+
       if pacientes.length
         table
           thead
@@ -20,6 +24,8 @@ html
               th Edad
               th Diagnóstico
               th Turnos
+              if ['admin', 'recepcionista'].includes(usuario.rol)
+                th Acciones
           tbody
             each paciente in pacientes
               tr
@@ -30,18 +36,73 @@ html
                 td
                   if paciente.turnos.length
                     ul.turnos-list
-                      each turno, index in paciente.turnos
+                      each turno in paciente.turnos
                         li.turno-item
-                          span.turno-text= turno
-                          button.btn-eliminar(type="button" 
+                          span.turno-text= turno.fechaHora
+                          button.btn-icon-eliminar(type="button" 
                                              data-paciente-id=paciente.id 
-                                             data-turno-index=index 
-                                             data-turno-fecha=turno 
-                                             title="Eliminar turno")
+                                             data-turno-id=turno.id 
+                                             data-turno-fecha=turno.fechaHora 
+                                             title="Eliminar turno") x
                   else
                     | Sin turnos
+                if ['admin', 'recepcionista'].includes(usuario.rol)
+                  td
+                    form(action=`/pacientes/${paciente.id}?_method=DELETE` method="POST" onsubmit="return confirm('¿Eliminar paciente?');")
+                       //- Simular DELETE con POST si no hay method-override configurado, o usar fetch. 
+                       //- Asumiremos que el controller acepta POST o que hay method-override. 
+                       //- Si no, usaremos JS. Por simplicidad, usaremos un script simple para eliminar.
+                       button.btn.btn-danger(type="button" onclick=`eliminarPaciente('${paciente.id}')`) Eliminar
+
       else
         p No hay pacientes registrados.
+
+    // Modal Crear Paciente
+    .modal#modalCrearPaciente(style="display:none;")
+      .modal-content
+        h2 Nuevo Paciente
+        form(action="/pacientes" method="POST")
+          .form-group
+            label(for="nombre") Nombre:
+            input(type="text" name="nombre" required)
+          .form-group
+            label(for="F_Nac") Fecha de Nacimiento:
+            input(type="date" name="F_Nac" required)
+          .form-group
+            label(for="diagnostico") Diagnóstico Inicial:
+            input(type="text" name="diagnostico" required)
+          .modal-buttons
+            button.btn-cancelar(type="button" onclick="cerrarModalCrear()") Cancelar
+            button.btn(type="submit") Guardar
+
+    script.
+      function abrirModalCrear() {
+        document.getElementById('modalCrearPaciente').style.display = 'flex';
+      }
+      function cerrarModalCrear() {
+        document.getElementById('modalCrearPaciente').style.display = 'none';
+      }
+      function cerrarModalError() {
+        document.getElementById('modalErrorEliminar').style.display = 'none';
+      }
+
+      function eliminarPaciente(id) {
+        if(confirm('¿Eliminar paciente y sus turnos?')) {
+          fetch('/pacientes/' + id, { method: 'DELETE' })
+            .then(async res => {
+              if(res.ok) {
+                window.location.reload();
+              } else if (res.status === 400) {
+                const data = await res.json();
+                document.getElementById('mensajeErrorEliminar').textContent = data.error || 'No se puede eliminar.';
+                document.getElementById('modalErrorEliminar').style.display = 'flex';
+              } else {
+                alert('Error al eliminar');
+              }
+            })
+            .catch(err => console.error(err));
+        }
+      }
     
     // Modal de confirmación para eliminar turno
     .modal#modalEliminarTurno
@@ -54,6 +115,14 @@ html
         .modal-buttons
           button.btn.btn-cancelar#btnCancelar Cancelar
           button.btn.btn-confirmar#btnConfirmarEliminar Eliminar
+
+    // Modal Error Eliminar
+    .modal#modalErrorEliminar(style="display:none;")
+      .modal-content
+        h3 ⚠️ No se puede eliminar
+        p#mensajeErrorEliminar El paciente tiene turnos pendientes.
+        .modal-buttons
+          button.btn(type="button" onclick="cerrarModalError()") Entendido
     
     script(src="/js/theme.js")
     script(src="/js/pacientes.js")
