@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    title= titulo
+    link(rel="stylesheet" href="/css/styles.css")
+
+  body
+    button.theme-toggle(id="themeBtn") 🌙
+    nav
+      a.btn(href="/") ← Volver al Inicio
+    
+    .content
+      h1= titulo
+      if medicos.length
+        table
+          thead
+            tr
+              th Nombre
+              th Especialidad
+              th Matrícula
+              th Email
+          tbody
+            each medico in medicos
+              tr
+                td= medico.nombre
+                td= medico.especialidad
+                td= medico.matricula
+                td= medico.email
+      else
+        p No hay médicos registrados.
+    
+    script(src="/js/theme.js")

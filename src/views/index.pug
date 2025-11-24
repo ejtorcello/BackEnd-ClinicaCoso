@@ -11,3 +11,6 @@ block content
       if usuario.rol === "admin"
         a.btn(href="/medicos") Ver Médicos
         a.btn(href="/usuarios") Administrar Usuarios
+      
+      if usuario.rol === "medico"
+        a.btn(href="/medicos/mis-pacientes") Mis Pacientes

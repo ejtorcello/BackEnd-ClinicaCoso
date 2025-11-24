@@ -10,6 +10,6 @@ router.get("/login", loginView);
 router.post("/login", loginUsuario);
 
 // logout
-router.post("/logout", logoutUsuario);
+router.get("/logout", logoutUsuario);
 
 export default router;

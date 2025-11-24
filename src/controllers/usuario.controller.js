@@ -11,6 +11,9 @@ export const crearUsuario = async (req, res) => {
     const usuario = new Usuario({ nombre, email, password, rol });
     await usuario.save();
 
+    if (req.headers.accept && req.headers.accept.includes("text/html")) {
+      return res.redirect("/usuarios");
+    }
     res.status(201).json({ mensaje: "Usuario creado correctamente", usuario });
   } catch (error) {
     res.status(500).json({ mensaje: error.message });
@@ -20,7 +23,10 @@ export const crearUsuario = async (req, res) => {
 // todos los usuarios
 export const obtenerUsuarios = async (req, res) => {
   try {
-    const usuarios = await Usuario.find().select("-password");
+    const usuarios = await Usuario.find().select("-password").lean();
+    if (req.headers.accept && req.headers.accept.includes("text/html")) {
+      return res.render("usuarios", { usuarios, titulo: "Administrar Usuarios" });
+    }
     res.json(usuarios);
   } catch (error) {
     res.status(500).json({ mensaje: error.message });

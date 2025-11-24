@@ -21,7 +21,7 @@ export const loginUsuario = async (req, res) => {
     req.session.rol = usuario.rol;
 
     // res.json({ mensaje: "Login exitoso", usuario: { id: usuario._id, nombre: usuario.nombre, rol: usuario.rol } });
-    
+
     // redirigir al index para pug
     res.redirect("/");
   } catch (error) {
@@ -33,6 +33,6 @@ export const logoutUsuario = (req, res) => {
   req.session.destroy(err => {
     if (err) return res.status(500).json({ mensaje: "ERror al cerrar sesion" });
     res.clearCookie("connect.sid"); // nombre por defecto de la qk de express-session
-    res.json({ mensaje: "Logout exitoso" });
+    res.redirect("/auth/login");
   });
 };

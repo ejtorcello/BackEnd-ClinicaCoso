@@ -17,7 +17,7 @@ html
             tr
               th ID
               th Nombre
-              th Fecha de Nacimiento
+              th Edad
               th Diagnóstico
               th Turnos
           tbody
@@ -25,7 +25,7 @@ html
               tr
                 td= paciente.id
                 td= paciente.nombre
-                td= paciente.F_Nac ? new Date(paciente.F_Nac).toLocaleDateString('es-ES') : 'N/A'
+                td= paciente.edad
                 td= paciente.diagnostico
                 td
                   if paciente.turnos.length

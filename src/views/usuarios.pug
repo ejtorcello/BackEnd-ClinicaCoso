@@ -1,0 +1,79 @@
+doctype html
+html
+  head
+    title= titulo
+    link(rel="stylesheet" href="/css/styles.css")
+
+  body
+    button.theme-toggle(id="themeBtn") 🌙
+    nav
+      a.btn(href="/") ← Volver al Inicio
+    
+    .content
+      h1= titulo
+
+      // Formulario para crear usuario
+      .form-container
+        h2 Crear Nuevo Usuario
+        form(action="/usuarios" method="POST")
+          .form-group
+            label(for="nombre") Nombre:
+            input(type="text" name="nombre" id="nombre" required)
+          
+          .form-group
+            label(for="email") Email:
+            input(type="email" name="email" id="email" required)
+          
+          .form-group
+            label(for="password") Contraseña:
+            input(type="password" name="password" id="password" required)
+          
+          .form-group
+            label(for="rol") Rol:
+            select(name="rol" id="rol")
+              option(value="recepcionista") Recepcionista
+              option(value="medico") Médico
+              option(value="admin") Admin
+          
+          button.btn(type="submit") Crear Usuario
+
+      hr
+
+      // Lista de usuarios
+      h2 Usuarios Existentes
+      if usuarios.length
+        table
+          thead
+            tr
+              th Nombre
+              th Email
+              th Rol
+              th Acciones
+          tbody
+            each u in usuarios
+              tr
+                td= u.nombre
+                td= u.email
+                td= u.rol
+                td
+                  button.btn-eliminar(onclick=`eliminarUsuario('${u._id}')`) Eliminar
+      else
+        p No hay usuarios registrados.
+    
+    script(src="/js/theme.js")
+    script.
+      async function eliminarUsuario(id) {
+        if (!confirm('¿Estás seguro de eliminar este usuario?')) return;
+        
+        try {
+          const res = await fetch(`/usuarios/${id}`, { method: 'DELETE' });
+          if (res.ok) {
+            window.location.reload();
+          } else {
+            alert('Error al eliminar usuario');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('Error al eliminar usuario');
+        }
+      }

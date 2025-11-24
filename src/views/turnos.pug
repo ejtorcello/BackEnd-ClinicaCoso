@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title= titulo
+    link(rel="stylesheet" href="/css/styles.css")
+
+  body
+    button.theme-toggle(id="themeBtn") 🌙
+    nav
+      a.btn(href="/") ← Volver al Inicio
+    
+    .content
+      h1= titulo
+      a.btn(href="/turnos/nuevo" style="margin-bottom: 20px; display: inline-block;") + Nuevo Turno
+      if turnos.length
+        table
+          thead
+            tr
+              th Paciente
+              th Fecha y Hora
+          tbody
+            each turno in turnos
+              tr
+                td= turno.paciente ? turno.paciente.nombre : 'Desconocido'
+                td= turno.fechaHora
+      else
+        p No hay turnos registrados.
+    
+    script(src="/js/theme.js")

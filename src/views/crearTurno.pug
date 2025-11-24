@@ -1,0 +1,39 @@
+doctype html
+html
+  head
+    title= titulo
+    link(rel="stylesheet" href="/css/styles.css")
+
+  body
+    button.theme-toggle(id="themeBtn") 🌙
+    nav
+      a.btn(href="/turnos") ← Volver a Turnos
+    
+    .content
+      h1= titulo
+      form(action="/turnos" method="POST")
+        .form-group
+          label(for="pacienteId") Paciente:
+          select(name="pacienteId" id="pacienteId" required)
+            option(value="") Seleccione un paciente
+            each paciente in pacientes
+              option(value=paciente._id)= paciente.nombre
+
+        .form-group
+          label(for="medicoId") Médico:
+          select(name="medicoId" id="medicoId" required)
+            option(value="") Seleccione un médico
+            each medico in medicos
+              option(value=medico._id)= medico.nombre
+
+        .form-group
+          label(for="fechaHora") Fecha y Hora:
+          input(type="datetime-local" name="fechaHora" id="fechaHora" required)
+
+        .form-group
+          label(for="motivo") Motivo:
+          input(type="text" name="motivo" id="motivo" placeholder="Motivo de la consulta")
+
+        button.btn(type="submit") Crear Turno
+    
+    script(src="/js/theme.js")

@@ -11,6 +11,21 @@ export const obtenerPacientes = async (req, res) => {
       // transformar turnos a strings para compatibilidad con vistas
       p.turnos = turnos.map(t => t.fechaHora);
       p.id = p._id.toString();
+
+      // Calcular edad
+      if (p.F_Nac) {
+        const hoy = new Date();
+        const nacimiento = new Date(p.F_Nac);
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const mes = hoy.getMonth() - nacimiento.getMonth();
+        if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+          edad--;
+        }
+        p.edad = edad;
+      } else {
+        p.edad = 'N/A';
+      }
+
       return p;
     }));
     // Si la ruta es para renderizar vista

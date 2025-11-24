@@ -1,0 +1,67 @@
+doctype html
+html
+  head
+    title= titulo
+    link(rel="stylesheet" href="/css/styles.css")
+
+  body
+    button.theme-toggle(id="themeBtn") 🌙
+    nav
+      a.btn(href="/") ← Volver al Inicio
+    
+    .content
+      h1= titulo
+      if turnos.length
+        table
+          thead
+            tr
+              th Paciente
+              th Fecha y Hora
+              th Motivo
+              th Acciones
+          tbody
+            each turno in turnos
+              tr
+                td= turno.paciente ? turno.paciente.nombre : 'Desconocido'
+                td= turno.fechaHora
+                td= turno.motivo || 'N/A'
+                td
+                  .action-buttons
+                    form(action=`/medicos/turno/${turno._id}/cancelar` method="POST" style="display:inline")
+                      button.btn-eliminar(type="submit" onclick="return confirm('¿Cancelar este turno?')") Cancelar
+                    
+                    button.btn(onclick=`abrirModal('${turno._id}', '${turno.paciente ? turno.paciente.nombre : ""}')`) Completar
+
+      else
+        p No tienes pacientes en espera.
+
+    // Modal para completar turno
+    .modal#modalCompletar(style="display:none;")
+      .modal-content
+        h2 Completar Consulta
+        p Paciente: <span id="modalPacienteNombre"></span>
+        
+        form#formCompletar(method="POST")
+          .form-group
+            label(for="diagnostico") Nuevo Diagnóstico:
+            textarea(name="diagnostico" id="diagnostico" required rows="4")
+          
+          .modal-buttons
+            button.btn-cancelar(type="button" onclick="cerrarModal()") Cancelar
+            button.btn(type="submit") Guardar y Finalizar
+
+    script(src="/js/theme.js")
+    script.
+      function abrirModal(turnoId, pacienteNombre) {
+        const modal = document.getElementById('modalCompletar');
+        const form = document.getElementById('formCompletar');
+        const spanNombre = document.getElementById('modalPacienteNombre');
+        
+        form.action = `/medicos/turno/${turnoId}/completar`;
+        spanNombre.textContent = pacienteNombre;
+        modal.style.display = 'flex';
+      }
+
+      function cerrarModal() {
+        document.getElementById('modalCompletar').style.display = 'none';
+      }

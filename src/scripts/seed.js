@@ -27,7 +27,7 @@ const run = async () => {
 
     // Crear 5 Médicos
     const medicos = [
-      { nombre: "Dr. House", especialidad: "Diagnóstico", matricula: "M001", email: "house@hospital.com" },
+      { nombre: "Dr. House", especialidad: "Diagnóstico", matricula: "M001", email: "medico@hospital.com" },
       { nombre: "Dra. Lopez", especialidad: "Cirugía General", matricula: "M002", email: "solcitonegro@hospital.com" },
       { nombre: "Dr. Salvia", especialidad: "Neurocirugía", matricula: "M003", email: "s@hospital.com" },
       { nombre: "Dra. Yang", especialidad: "Cardiología", matricula: "M004", email: "@hospital.com" },
@@ -47,7 +47,7 @@ const run = async () => {
       await Usuario.create(u);
     }
     console.log("Usuarios creados.");
-   
+
 
     const medicosDb = await Medico.find();
 
