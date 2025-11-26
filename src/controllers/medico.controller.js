@@ -69,15 +69,21 @@ export const misPacientes = async (req, res) => {
 
     // Buscar medico por email
     const medico = await Medico.findOne({ email: usuario.email });
-    if (!medico) return res.status(404).send("Perfil de médico no encontrado para este usuario");
+
+    // Si no encuentra el perfil de médico, renderizar vista con mensaje amigable o redirigir
+    if (!medico) {
+      return res.render("error", {
+        message: "No se encontró un perfil de médico asociado a tu cuenta. Por favor, contacta al administrador."
+      });
+    }
 
     // Buscar turnos
     const turnos = await Turno.find({ medico: medico._id }).populate("paciente").lean();
 
     res.render("mis-pacientes", { turnos, titulo: "Mis Pacientes" });
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Error al cargar pacientes");
+    console.error("Error en misPacientes:", error);
+    res.status(500).render("error", { message: "Error al cargar pacientes" });
   }
 };
 
@@ -86,7 +92,7 @@ export const cancelarTurnoMedico = async (req, res) => {
     await Turno.findByIdAndDelete(req.params.id);
     res.redirect("/medicos/mis-pacientes");
   } catch (error) {
-    console.error(error);
+    console.error("Error en cancelarTurnoMedico:", error);
     res.status(500).send("Error al cancelar turno");
   }
 };
@@ -97,15 +103,17 @@ export const completarTurnoMedico = async (req, res) => {
     const turno = await Turno.findById(req.params.id);
     if (!turno) return res.status(404).send("Turno no encontrado");
 
-    // Actualizar diagnostico del paciente
-    await Paciente.findByIdAndUpdate(turno.paciente, { diagnostico });
+    if (turno.paciente) {
+      // Actualizar diagnostico del paciente
+      await Paciente.findByIdAndUpdate(turno.paciente, { diagnostico });
+    }
 
-    // Eliminar turno (o marcar como )
+    // Eliminar turno (o marcar como realizado si se prefiere no borrar)
     await Turno.findByIdAndDelete(req.params.id);
 
     res.redirect("/medicos/mis-pacientes");
   } catch (error) {
-    console.error(error);
+    console.error("Error en completarTurnoMedico:", error);
     res.status(500).send("Error al completar turno");
   }
 };

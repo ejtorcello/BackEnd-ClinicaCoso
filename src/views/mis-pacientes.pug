@@ -22,7 +22,7 @@ html
           tbody
             each turno in turnos
               tr
-                td= turno.paciente ? turno.paciente.nombre : 'Desconocido'
+                td= turno.paciente ? `${turno.paciente.nombre} ${turno.paciente.apellido}` : 'Desconocido'
                 td= turno.fechaHora
                 td= turno.motivo || 'N/A'
                 td
@@ -30,7 +30,7 @@ html
                     form(action=`/medicos/turno/${turno._id}/cancelar` method="POST" style="display:inline")
                       button.btn-eliminar(type="submit" onclick="return confirm('¿Cancelar este turno?')") Cancelar
                     
-                    button.btn(onclick=`abrirModal('${turno._id}', '${turno.paciente ? turno.paciente.nombre : ""}')`) Completar
+                    button.btn(onclick=`abrirModal('${turno._id}', '${turno.paciente ? turno.paciente.nombre + " " + turno.paciente.apellido : ""}')`) Completar
 
       else
         p No tienes pacientes en espera.
